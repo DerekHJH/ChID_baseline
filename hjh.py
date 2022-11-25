@@ -299,32 +299,10 @@ def main():
     #     }
     # )
     
-    # Load pretrained model and tokenizer
-
-    # Distributed training:
-    # The .from_pretrained methods guarantee that only one local process can concurrently
-    # download model & vocab.
-    config = AutoConfig.from_pretrained(
-        model_args.config_name if model_args.config_name else model_args.model_name_or_path,
-        cache_dir=model_args.cache_dir,
-        revision=model_args.model_revision,
-        use_auth_token=True if model_args.use_auth_token else None,
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
-        cache_dir=model_args.cache_dir,
-        use_fast=model_args.use_fast_tokenizer,
-        revision=model_args.model_revision,
-        use_auth_token=True if model_args.use_auth_token else None,
-    )
-    model = BertForChID.from_pretrained(
-        model_args.model_name_or_path,
-        from_tf=bool(".ckpt" in model_args.model_name_or_path),
-        config=config,
-        cache_dir=model_args.cache_dir,
-        revision=model_args.model_revision,
-        use_auth_token=True if model_args.use_auth_token else None,
-    )
+    checkpoint = "./tmp/checkpoint-3895"
+    config = AutoConfig.from_pretrained(checkpoint)
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    model = BertForChID.from_pretrained(checkpoint, config=config)
 
     label_column_name = "labels"
     idiom_tag = '#idiom#'
@@ -477,49 +455,13 @@ def main():
         compute_metrics=compute_metrics,
     )
 
-    # Training
-    if training_args.do_train:
-        checkpoint = None
-        if training_args.resume_from_checkpoint is not None:
-            checkpoint = training_args.resume_from_checkpoint
-        elif last_checkpoint is not None:
-            checkpoint = last_checkpoint
-        train_result = trainer.train(resume_from_checkpoint=checkpoint)
-        trainer.save_model()  # Saves the tokenizer too for easy upload
-        metrics = train_result.metrics
-
-        max_train_samples = (
-            data_args.max_train_samples if data_args.max_train_samples is not None else len(train_dataset)
-        )
-        metrics["train_samples"] = min(max_train_samples, len(train_dataset))
-
-        trainer.log_metrics("train", metrics)
-        trainer.save_metrics("train", metrics)
-        trainer.save_state()
-
     # Evaluation
     if training_args.do_eval:
         logger.info("*** Evaluate ***")
-
+        # predictions = trainer.predict(test_dataset=test_dataset)
         metrics = trainer.evaluate(eval_dataset=test_dataset)
-        metrics["test_samples"] = len(test_dataset)
 
-        trainer.log_metrics("test", metrics)
-        trainer.save_metrics("test", metrics)
-
-    # kwargs = dict(
-    #     finetuned_from=model_args.model_name_or_path,
-    #     tasks="multiple-choice",
-    #     dataset_tags="swag",
-    #     dataset_args="regular",
-    #     dataset="SWAG",
-    #     language="en",
-    # )
-
-    # if training_args.push_to_hub:
-    #     trainer.push_to_hub(**kwargs)
-    # else:
-    #     trainer.create_model_card(**kwargs)
+        print()
 
 if __name__ == "__main__":
     main()
