@@ -299,7 +299,7 @@ def main():
     #     }
     # )
     
-    checkpoint = "./tmp/checkpoint-3895"
+    checkpoint = "./tmp"
     config = AutoConfig.from_pretrained(checkpoint)
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model = BertForChID.from_pretrained(checkpoint, config=config)
@@ -459,7 +459,11 @@ def main():
     if training_args.do_eval:
         logger.info("*** Evaluate ***")
         # predictions = trainer.predict(test_dataset=test_dataset)
+        metrics = trainer.evaluate(eval_dataset=eval_dataset)
+        print(metrics)
+
         metrics = trainer.evaluate(eval_dataset=test_dataset)
+        print(metrics)
 
         print()
 

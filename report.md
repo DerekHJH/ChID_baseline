@@ -18,13 +18,21 @@ In our first experiment, we only preprocess the dataset as specified above and d
 
 In our second experiment, we change the scripts and use the output of the ``[SEP]`` token for each candidate idiom as its probability score.
 
-We keep the model structure and all the hyperparameters unchanged (the same as the baseline). And our experiments are conducted on a machine equipped with one GeForce GTX 3090 GPU, two AMD EPYC 7H12 CPU @ 2.6GHz with 64 core processors, and 512G RAM.
+We keep the model structure and all the hyperparameters unchanged (the same as the baseline). In addition, due to the lack of computation resources, we only choose the train_data_1w dataset for training. And our experiments are conducted on a machine equipped with one GeForce GTX 3090 GPU, two AMD EPYC 7H12 CPU @ 2.6GHz with 64 core processors, and 512G RAM.
 
 # Results and Analysis
-
+|   method    |  dev  |  test |
+|-------------|:-----:|:-----:|
+|  baseline   | 64.28 | 64.29 |
+|     CS      | 69.82 | 70.07 |
+|           |  |  |
+|          |  |  |
+|   |  |  |
 
 
 # Limitations
+
+Our approach might lose precision when the sentence is too long and has to be cut off. In the original 
 
 # Conclusions
 

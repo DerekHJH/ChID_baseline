@@ -511,12 +511,16 @@ def main():
 
         trainer.log_metrics("dev", metrics)
         trainer.save_metrics("dev", metrics)
+        print("#############################dev results:")
+        print(metrics)
 
         metrics = trainer.evaluate(eval_dataset=test_dataset)
         metrics["test_samples"] = len(test_dataset)
 
         trainer.log_metrics("test", metrics)
         trainer.save_metrics("test", metrics)
+        print("#############################test results:")
+        print(metrics)
 
     # kwargs = dict(
     #     finetuned_from=model_args.model_name_or_path,
