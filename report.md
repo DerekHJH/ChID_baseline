@@ -25,8 +25,8 @@ The following is a table showing the dev and test accuracy using our approach. `
 | 0           |   51.55  |   51.87   |   52.78  |   52.93   |
 | 1w          |   64.28  |   64.29   |   69.82  |   70.07   |
 | 5w          |          |           |   83.45  |   83.47   | 
-| 10w         |                      |   90.05  |   90.12   |
-| full (50w)  | 
+| 10w         |          |           |   90.05  |   90.12   |
+| full (50w)  |          |           |          |           |
 
 As we can see from the table, the model performance is already slightly improved in the zero-shot scenario, by simply splicing the candidate idioms at the beginning of each sentence. After training using the train_data_1w dataset, we achieve an accuracy improvement more then 5%.
 
