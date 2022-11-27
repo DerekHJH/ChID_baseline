@@ -501,11 +501,21 @@ def main():
     if training_args.do_eval:
         logger.info("*** Evaluate ***")
 
+        metrics = trainer.evaluate(eval_dataset=eval_dataset)
+        metrics["dev_samples"] = len(eval_dataset)
+
+        trainer.log_metrics("dev", metrics)
+        trainer.save_metrics("dev", metrics)
+        print("#############################dev results:")
+        print(metrics)
+
         metrics = trainer.evaluate(eval_dataset=test_dataset)
         metrics["test_samples"] = len(test_dataset)
 
         trainer.log_metrics("test", metrics)
         trainer.save_metrics("test", metrics)
+        print("#############################test results:")
+        print(metrics)
 
     # kwargs = dict(
     #     finetuned_from=model_args.model_name_or_path,
