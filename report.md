@@ -58,7 +58,7 @@ indices=tensor([ 24马, 199, 198``[MASK]4``, 196``[MASK]2``,  10``[SEP]``], devi
 
 candidate_mask index = 195, 196, 197, 198
 
-We can see that, in the last layer where the final prediction is to be made, the attention of all four masks are focused on the correct candidate idiom, verifying thatour approach works the way we expected.
+We can see that, in the last layer where the final prediction is to be made, the attention of all four masks are focused on the correct candidate idiom, verifying that our approach works the way we expected. Besides, the masks also pay attention to words like ``的``, probably to make sure that the masked word are an adjective.
 
 ## Training and Testing Dataset Overlap
 
