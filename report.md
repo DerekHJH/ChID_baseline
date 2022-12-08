@@ -70,7 +70,7 @@ Under this setting, we find that the overlap percentage is about (Still calculat
 
 Due to the computation complexity, and another four final projects to be finished before the end of this semester, we decide to leave this part of work to the future. For now, we roughly look through the first 30 data entries in test_data.json and try to find the "match" in the train_data.json. We successfully found 3 data leakage examples, described as the table below.
 
-|                      |               index               |
+|                      |   index   |   index   |   index   |
 |----------------------|:---------:|:---------:|:---------:|
 | test_data entry idx  |    15     |    24     |    27     |
 | train_data entry idx |   230016  |  317505   |   289346  |
