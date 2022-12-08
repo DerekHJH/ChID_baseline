@@ -8,11 +8,11 @@ We define a sentence to be a segment of text with only one idiom to be filled in
 
 In the original method, the model can only see the sentence itself, but cannot see the corresponding set of candidate idioms that constrains the result. we believe this blindness hinders the model from learning what could be filled into the right position of the sentence. And therefore the model might try to output the "correct" (making sense in the current context) answer that is out of the constraint, negatively impacting the accuracy. 
 
-We splice all the candidate idoms at the beginning of each sentence, seperated by a special ``[SEP]`` token, in the hope that the masked token will pay more attention to the given candidates when deciding the answer.
+We splice all the candidate idoms at the beginning of each sentence, separated by a special ``[SEP]`` token, in the hope that the masked token will pay more attention to the given candidates when deciding the answer.
 
 # Experiment
 
-First, for each sentence, we splice its candidates at the beginning, seperated by a seperation token ``[SEP]``. For example, suppose the sentence is ``随后的一幕，[MASK][MASK][MASK][MASK]，易建联双手将球狠狠地砸进篮筐......`` and the candidates are ``['瓜熟蒂落', '诗情画意', '皆大欢喜', '倚老卖老', '铮铮铁骨', '迎刃而解', '水到渠成']``. After the splice, the sentence becomes ``克勤克俭[SEP]好吃懒做[SEP]鼻青眼肿[SEP]孜孜不倦[SEP]无微不至[SEP]任劳任怨[SEP]引火烧身[SEP]随后的一幕，[MASK][MASK][MASK][MASK]，易建联双手将球狠狠地砸进篮筐......``.
+First, for each sentence, we splice its candidates at the beginning, separated by a seperation token ``[SEP]``. For example, suppose the sentence is ``随后的一幕，[MASK][MASK][MASK][MASK]，易建联双手将球狠狠地砸进篮筐......`` and the candidates are ``['瓜熟蒂落', '诗情画意', '皆大欢喜', '倚老卖老', '铮铮铁骨', '迎刃而解', '水到渠成']``. After the splice, the sentence becomes ``克勤克俭[SEP]好吃懒做[SEP]鼻青眼肿[SEP]孜孜不倦[SEP]无微不至[SEP]任劳任怨[SEP]引火烧身[SEP]随后的一幕，[MASK][MASK][MASK][MASK]，易建联双手将球狠狠地砸进篮筐......``.
 
 We preprocess the dataset as specified above and keep the model structure and all the hyperparameters unchanged (the same as the baseline). And our experiments are conducted on a machine equipped with one GeForce GTX 3090 GPU, two AMD EPYC 7H12 CPU @ 2.6GHz with 64 core processors, and 512G RAM.
 
@@ -34,7 +34,7 @@ Then, we produce the results of our approach (the last two columns of the table)
 
 ## Attention Score
 
-We have shown that our approach works and improves the accuracy by a large margin. Next, we show that the model is indeed paying much "attention" to the spliced candidate idioms at the begining of each sentence.
+We have shown that our approach works and improves the accuracy by a large margin. Next, we show that the model is indeed paying much "attention" to the spliced candidate idioms at the beginning of each sentence.
 
 We use the model trained using train_data_1w, and pick out one example to demonstrate this phenomenon. But this phenomenon is not limited to this specific example.
 
@@ -62,6 +62,12 @@ We can see that, in the last layer where the final prediction is to be made, the
 
 ## Training and Testing Dataset Overlap
 
+We see that, using the full training set, the accuracy in the testing set is abnormally high. We think that there might be some overlap between the full training set and the testing set.
+
+To veryfy our assumption, we try to calculate the overlap percentage between the full training set and the testing set. Each data entry has one sentence and one set of candidate idioms. For two data entries, We calculate the normalized edit distance, normalized Longest Common Sequence of the two sentences. "Normalize" means we divide the edit distance and the LCS by the length of the longer sentence, making sure that these two metrics fall in the range of (0, 1). Then, we choose the larger metric and set the threshold as 0.8. If the larger metric is largr than the threshold, and the candidate idioms of two data entris are set-equivalent, the two data entries are considered equivalent.
+
+Under this setting, we find that the overlap percentage is about .
+
 # Limitations
 
 Our approach might lose precision when the sentence is too long and has to be cut off. When a sentence is too long and has to be cut off, the baseline model can keep more content of the sentence, while our approach can keep less content due to the extra space occupied by the spliced candidate idioms. We add information by splicing the candidate idioms at the beginning of each sentence, but at the same time we lose information by cutting off more content (context) of a long sentence.
@@ -70,5 +76,14 @@ In addition, in the original dataset, there might be multiple ``hole``s to fill 
 
 # Conclusions
 
+By incorporating the candidate idioms into the input sentence, we could indeed improve the model's performance (accuracy) in the expected way: The model indeed pays more attention to the correct idiom when making predictions.
+
+In addition, we found that there is overlap between the full training set and the testing set. And the overlap percentage is .
+
+
 # Division of Labor
 
+以下按学号顺序排序，不分先后
+何依波 (2201111635): 探索整理数据集，调查训练集和测试集之间的重叠，整理对比实验数据，撰写结论
+胡俊豪 (2201111636): 阅读并理解实验框架，修改代码，完成实验，记录实验结果，撰写结论
+华子曰 (2201111637): 整理实验思路、方法、实验流程、局限性等，最后完成课堂报告PPT
