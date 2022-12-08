@@ -64,9 +64,14 @@ We can see that, in the last layer where the final prediction is to be made, the
 
 We see that, using the full training set, the accuracy in the testing set is abnormally high. We think that there might be some overlap between the full training set and the testing set.
 
-To veryfy our assumption, we try to calculate the overlap percentage between the full training set and the testing set. Each data entry has one sentence and one set of candidate idioms. For two data entries, We calculate the normalized edit distance, normalized Longest Common Sequence of the two sentences. "Normalize" means we divide the edit distance and the LCS by the length of the longer sentence, making sure that these two metrics fall in the range of (0, 1). Then, we choose the larger metric and set the threshold as 0.8. If the larger metric is largr than the threshold, and the candidate idioms of two data entris are set-equivalent, the two data entries are considered equivalent.
+To verify our assumption, we try to calculate the overlap percentage between the full training set and the testing set. Each data entry has one sentence and one set of candidate idioms. For two data entries, We calculate the normalized edit distance, normalized Longest Common Sequence of the two sentences. "Normalize" means we divide the edit distance and the LCS by the length of the longer sentence, making sure that these two metrics fall in the range of (0, 1). Then, we choose the larger metric and set the threshold as 0.8. If the larger metric is larger than the threshold, and the candidate idioms of two data entries are set-equivalent, the two data entries are considered equivalent.
 
-Under this setting, we find that the overlap percentage is about .
+Under this setting, we find that the overlap percentage is about (Still calculating, too slow). 
+
+Due to the computation complexity, and another four final projects to be finished before the end of this semester, we decide to leave this part of work to the future. For now, we roughly look through the first 30 data entries in test_data.json and try to find the "match" in the train_data.json. We successfully found 3 data leakage examples, described as the table below.
+
+| test_data entry idx  |    15     |    24     |    27     |
+| train_data entry idx |   230016  |  317505   |   289346  |
 
 # Limitations
 
@@ -78,12 +83,12 @@ In addition, in the original dataset, there might be multiple ``hole``s to fill 
 
 By incorporating the candidate idioms into the input sentence, we could indeed improve the model's performance (accuracy) in the expected way: The model indeed pays more attention to the correct idiom when making predictions.
 
-In addition, we found that there is overlap between the full training set and the testing set. And the overlap percentage is .
+In addition, we found that there is indeed some overlap between the full training set and the testing set. 
 
 
 # Division of Labor
 
 以下按学号顺序排序，不分先后
-何依波 (2201111635): 探索整理数据集，调查训练集和测试集之间的重叠，整理对比实验数据，撰写结论
-胡俊豪 (2201111636): 阅读并理解实验框架，修改代码，完成实验，记录实验结果，撰写结论
-华子曰 (2201111637): 整理实验思路、方法、实验流程、局限性等，最后完成课堂报告PPT
+- 何依波 (2201111635): 探索整理数据集，调查训练集和测试集之间的重叠，整理对比实验数据，撰写结论
+- 胡俊豪 (2201111636): 阅读并理解实验框架，修改代码，完成实验，记录实验结果，撰写结论
+- 华子曰 (2201111637): 整理实验思路、方法、实验流程、局限性等，最后完成课堂报告PPT
