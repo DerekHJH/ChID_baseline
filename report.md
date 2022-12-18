@@ -85,7 +85,15 @@ In addition, in the original dataset, there might be multiple ``hole``s to fill 
 
 By incorporating the candidate idioms into the input sentence, we could indeed improve the model's performance (accuracy) in the expected way: The model indeed pays more attention to the correct idiom when making predictions.
 
-In addition, we found that there is indeed some overlap between the full training set and the testing set. 
+In addition, we found that there is indeed some overlap between the full training set and the testing set.
+
+# Thoughts
+
+何依波：我负责的主要是数据处理，数据分析这一部分内容。通过本次大作业，我更加深刻的了解到数据处理是机器学习流程里面非常重要也非常困难的一部分。我主要的感想有两点。首先，通过肉眼观察数据，了解数据的基本构造、分布，对于后续模型的设计、实验的设计，以及实验结果的分析，都大有裨益。其次，数据分析其实是一个很困难的问题，特别是大数据分析。比如，在本次试验中，我负责找出训练集和测试集之间的重叠部分。训练数据集有50w条数据，测试数据集有1w条数据，这就意味着至少有50w * 1w = 50亿次比对。而每次比对，都需要计算两条数据里面句子的最长公共子序列、编辑距离等。假设每条数据的句子长度都为100（实际上平均长度可能大于100），且只考虑最长公共子序列的复杂度O(n^2)，那么大概需要50亿 * 100^2 = 50w亿次计算，根本不可能在有限时间内得到结果。如此高的复杂度，即使利用并行的方式处理数据或许也不能够解决上述问题，再加上计算资源受限，最终我们选择暂时停止对训练集和测试集重叠部分的分析，把注意力放在其他分析和优化上。
+
+胡俊豪：我负责的主要是方法的提出和实验。在看完baseline之后，第一个蹦出来的想法就是：“为什么选项没有被模型利用起来呢？”。于是很自然的，我就想到把选项也喂给模型，让模型看到句子的同时，也看到选项，肯定能够提高模型的表现吧？在这样的想法驱使下，我先简单的把所有选项都插在每个句子的最前面，用分隔符隔开，然后的配置都不变，直接跑实验。结果不出意外，效果直接飙升。但是我们也不能做这种纯intuitive的事情，到底为什么模型的效果会变好，是我们下一个需要分析的问题。所以我开始分析attention score，最终发现，模型在作出判断的时候，确实把更多的注意力放在了选项上。通过本次大作业，再次应证了：科学研究确实就是从灵光一现，然后到把灵光实现出来，然后根据实际效果进行进一步分析讨论原因的过程。
+
+华子曰：整个大作业合作过程中，我负责协调、控制，把关实验进度，整合思路，制作PPT等。在最开始，我们三个人是打算一个人做一部分，然后整合起来作为大作业提交。但是做到后来，我们发现，经常三个人之间互相搞不清楚对方在做什么，交流成本巨大。于是我们决定，还是必须得有一个人“领头”，从头到尾的整个逻辑思路，实验流程理清楚。这就好像论文发表一样，不能是第一二三四作者平均发力，必需要第一作者统领整个工作；否则工作容易乱套，没有主心骨，也没有主要推动人，容易坏掉。有一个人统领全局的好处，拿做PPT举例，就避免了三个人一个人做一个板块的内容，但是三部分内容有机整合到一起比较困难。
 
 
 # Division of Labor
